@@ -23,7 +23,13 @@ export async function fetchEntities() {
 		const res = await fetch(ENTITIES_URL);
 		if (!res.ok) return [];
 		const data = await res.json();
-		entitiesCache = Array.isArray(data) ? data : [];
+		if (Array.isArray(data)) {
+			entitiesCache = data;
+		} else if (data && data.categories) {
+			entitiesCache = Object.values(data.categories).flat();
+		} else {
+			entitiesCache = [];
+		}
 		return entitiesCache;
 	} catch {
 		return [];

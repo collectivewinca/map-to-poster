@@ -71,7 +71,7 @@ export function updateEntityMarkers(currentState) {
 
 	const size = 28;
 
-	entities.forEach((em) => {
+	entities.forEach((em, index) => {
 		const el = createMarkerElement(em.category, size);
 
 		const icon = L.divIcon({
@@ -81,7 +81,15 @@ export function updateEntityMarkers(currentState) {
 			iconAnchor: [size / 2, size / 2],
 		});
 
-		const marker = L.marker([em.lat, em.lon], { icon, interactive: false }).addTo(map);
+		const marker = L.marker([em.lat, em.lon], { icon, draggable: true }).addTo(map);
+
+		marker.on('dragend', () => {
+			const pos = marker.getLatLng();
+			const updated = [...currentState.entityMarkers];
+			updated[index] = { ...updated[index], lat: pos.lat, lon: pos.lng };
+			updateState({ entityMarkers: updated });
+		});
+
 		leafletMarkers.push(marker);
 
 		if (artisticMap) {
@@ -89,9 +97,16 @@ export function updateEntityMarkers(currentState) {
 				const mgl = mod.default || mod;
 				const aEl = createMarkerElement(em.category, size);
 
-				const aMarker = new mgl.Marker({ element: aEl, anchor: 'center' })
+				const aMarker = new mgl.Marker({ element: aEl, anchor: 'center', draggable: true })
 					.setLngLat([em.lon, em.lat])
 					.addTo(artisticMap);
+
+				aMarker.on('dragend', () => {
+					const pos = aMarker.getLngLat();
+					const updated = [...currentState.entityMarkers];
+					updated[index] = { ...updated[index], lat: pos.lat, lon: pos.lng };
+					updateState({ entityMarkers: updated });
+				});
 
 				artisticMarkers.push(aMarker);
 			});
