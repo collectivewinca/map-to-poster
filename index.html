@@ -8,7 +8,6 @@
 	<title>MINYATION - The First Music Republic</title>
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-	<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400;700&family=Cormorant+Garamond:wght@600&family=Dancing+Script:wght@400;700&family=Inter:wght@400;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
@@ -18,72 +17,116 @@
 
 <body class="bg-[#f8fafc] h-screen flex flex-col md:flex-row overflow-hidden">
 
-	<nav id="mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 z-[60] flex items-center justify-center gap-3 px-4 pb-5 pt-2">
-		<div class="flex-1 bg-white/95 backdrop-blur-xl rounded-[1.75rem] shadow-2xl shadow-slate-900/15 border border-white/60 flex items-center p-1.5 gap-1">
-			<button id="nav-btn-a" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-all duration-200 text-slate-400" data-target="mobile-sheet-a">
+		<nav id="mobile-nav" class="app-mobile-nav md:hidden fixed bottom-0 left-0 right-0 z-[60] flex items-center justify-center gap-3 px-4 pb-5 pt-2">
+			<div class="flex-1 bg-white/95 backdrop-blur-xl rounded-[1.75rem] shadow-2xl shadow-slate-900/15 border border-white/60 flex items-center p-1.5 gap-1">
+				<button id="nav-btn-a" aria-label="Open location and markers controls" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-colors duration-200 text-slate-400" data-target="mobile-sheet-a">
 				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
 				</svg>
-				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-all duration-200">Location</span>
+				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height] duration-200">Location</span>
 			</button>
-			<button id="nav-btn-b" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-all duration-200 text-slate-400" data-target="mobile-sheet-b">
+				<button id="nav-btn-b" aria-label="Open map style controls" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-colors duration-200 text-slate-400" data-target="mobile-sheet-b">
 				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
 				</svg>
-				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-all duration-200">Style</span>
+				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height] duration-200">Style</span>
 			</button>
-			<button id="nav-btn-c" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-all duration-200 text-slate-400" data-target="mobile-sheet-c">
+				<button id="nav-btn-c" aria-label="Open output controls" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-colors duration-200 text-slate-400" data-target="mobile-sheet-c">
 				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
 				</svg>
-				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-all duration-200">Output</span>
+				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height] duration-200">Output</span>
 			</button>
-			<button id="nav-btn-d" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-all duration-200 text-slate-400" data-target="credits-modal">
+				<button id="nav-btn-d" aria-label="Open about dialog" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-2xl transition-colors duration-200 text-slate-400" data-target="credits-modal">
 				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
 				</svg>
-				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-all duration-200">About</span>
+				<span class="mobile-nav-label text-[9px] font-black uppercase tracking-wider opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height] duration-200">About</span>
+			</button>
+			</div>
+				<button id="mobile-export-btn" aria-label="Export poster" class="w-14 h-14 bg-accent rounded-full shadow-2xl shadow-accent/40 flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform duration-200">
+				<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+				</svg>
+			</button>
+		</nav>
+
+		<div id="shell-mobile-actions" class="md:hidden fixed top-4 right-4 z-[70] flex items-center gap-2">
+			<button id="shell-toggle-mobile" type="button" aria-label="Hide controls" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur-xl border border-white/70 shadow-xl shadow-slate-900/10 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-colors">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18" />
+				</svg>
 			</button>
 		</div>
-		<button id="mobile-export-btn" class="w-14 h-14 bg-accent rounded-full shadow-2xl shadow-accent/40 flex items-center justify-center flex-shrink-0 active:scale-95 transition-all duration-200">
-			<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-			</svg>
-		</button>
-	</nav>
 
-	<aside class="hidden md:flex md:flex-col md:relative md:w-[380px] md:h-full bg-white border-r border-slate-100 overflow-hidden">
-		<div class="p-8 pb-6 flex items-center justify-between">
-			<button id="logo-btn" class="flex items-center space-x-3 hover:opacity-80 transition-opacity text-left outline-none group">
+		<aside id="app-sidebar" class="app-sidebar hidden md:flex md:flex-col md:relative md:w-[380px] md:h-full bg-white border-r border-slate-100 overflow-hidden">
+			<div class="p-8 pb-6 flex items-center justify-between">
+					<button id="logo-btn" aria-label="Open credits and about" class="flex items-center space-x-3 hover:opacity-80 transition-opacity text-left outline-none group">
 				<div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent group-active:scale-95 transition-transform logo-pulse">
-					<svg class="w-6 h-6 text-white group-hover:hidden transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-6 h-6 text-white group-hover:hidden transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
 					</svg>
-					<svg class="w-6 h-6 text-white hidden group-hover:block transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-6 h-6 text-white hidden group-hover:block transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
 					</svg>
 				</div>
 				<div>
 					<h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">MINY<span class="text-accent">ATION</span></h1>
 					<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mt-1">The First Music Republic</p>
+					</div>
+				</button>
+				<button id="shell-toggle-desktop" type="button" aria-label="Hide controls" class="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors">
+					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18" />
+					</svg>
+					<span>Hide</span>
+				</button>
+			</div>
+
+		<div class="px-8 pb-4">
+			<div class="rounded-[1.6rem] border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100/70 p-4 shadow-sm">
+				<div class="flex items-start justify-between gap-3">
+					<div>
+						<p class="text-[9px] font-black uppercase tracking-[0.24em] text-slate-400">Poster Studio</p>
+						<h2 class="mt-2 text-[18px] font-bold tracking-tight text-slate-900">Design Direction</h2>
+					</div>
+					<div class="rounded-full bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500 ring-1 ring-slate-200">Live</div>
 				</div>
-			</button>
+				<div class="mt-4 grid grid-cols-2 gap-2">
+					<div class="rounded-2xl bg-white/90 px-3 py-2 ring-1 ring-slate-100">
+						<div class="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">Place</div>
+						<div id="studio-summary-location" class="mt-1 text-[11px] font-semibold text-slate-900 truncate">Jakarta, Indonesia</div>
+					</div>
+					<div class="rounded-2xl bg-white/90 px-3 py-2 ring-1 ring-slate-100">
+						<div class="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">Look</div>
+						<div id="studio-summary-style" class="mt-1 text-[11px] font-semibold text-slate-900 truncate">Minimal White</div>
+					</div>
+					<div class="rounded-2xl bg-white/90 px-3 py-2 ring-1 ring-slate-100">
+						<div class="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">Details</div>
+						<div id="studio-summary-detail" class="mt-1 text-[11px] font-semibold text-slate-900 truncate">clean canvas</div>
+					</div>
+					<div class="rounded-2xl bg-white/90 px-3 py-2 ring-1 ring-slate-100">
+						<div class="text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">Export</div>
+						<div id="studio-summary-output" class="mt-1 text-[11px] font-semibold text-slate-900 truncate">1080 × 1080</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div class="flex-1 overflow-y-auto px-8 py-4 space-y-8 no-scrollbar">
 
 			<div id="section-location" class="space-y-4">
 				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">1. Define Location</h3>
+					<h3 class="text-sm font-semibold text-slate-900">1. Place</h3>
 					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">01</span>
 				</div>
 
 				<div class="space-y-3">
 					<div class="relative group">
-						<span class="label-sm">Search City</span>
+							<label for="search-input" class="label-sm">Search City</label>
 						<div class="relative">
-							<input type="text" id="search-input" placeholder="Search world cities..." class="input-field pl-10 pr-10" />
+								<input type="text" id="search-input" name="search-city" aria-label="Search city" autocomplete="off" placeholder="Search world cities…" class="input-field pl-10 pr-10" />
 							<svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 							</svg>
@@ -98,27 +141,27 @@
 					</div>
 
 					<div class="mt-2 text-left">
-						<span class="label-sm">Override City Name</span>
-						<input type="text" id="city-override-input" placeholder="Leave blank to use search result" class="input-field mt-1" />
+							<label for="city-override-input" class="label-sm">Override City Name</label>
+							<input type="text" id="city-override-input" name="city-override" aria-label="Override city name" autocomplete="off" placeholder="Leave blank to use search result…" class="input-field mt-1" />
 					</div>
 
 					<div class="mt-2 text-left">
 						<div class="flex items-center justify-between mb-1">
-							<span class="label-sm mb-0">Override Country Name</span>
-							<button id="toggle-country-btn" title="Toggle country visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
+								<label for="country-override-input" class="label-sm mb-0">Override Country Name</label>
+								<button id="toggle-country-btn" type="button" aria-label="Toggle country visibility on poster" title="Toggle country visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
 								<svg id="country-eye-icon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
 								</svg>
 							</button>
 						</div>
-						<input type="text" id="country-override-input" placeholder="Leave blank to use search result" class="input-field" />
+							<input type="text" id="country-override-input" name="country-override" aria-label="Override country name" autocomplete="off" placeholder="Leave blank to use search result…" class="input-field" />
 					</div>
 
 					<div class="mt-2">
 						<div class="flex items-center justify-between mb-1">
-							<span class="label-sm mb-0">Coordinates</span>
-							<button id="toggle-coords-btn" title="Toggle coordinates visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
+								<span class="label-sm mb-0">Coordinates</span>
+								<button id="toggle-coords-btn" type="button" aria-label="Toggle coordinates visibility on poster" title="Toggle coordinates visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
 								<svg id="coords-eye-icon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -127,12 +170,12 @@
 						</div>
 						<div class="grid grid-cols-2 gap-3">
 							<div>
-								<span class="label-sm">Latitude</span>
-								<input type="text" id="lat-input" class="input-field text-center font-mono text-xs" />
+									<label for="lat-input" class="label-sm">Latitude</label>
+									<input type="text" id="lat-input" name="latitude" aria-label="Latitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs" />
 							</div>
 							<div>
-								<span class="label-sm">Longitude</span>
-								<input type="text" id="lon-input" class="input-field text-center font-mono text-xs" />
+									<label for="lon-input" class="label-sm">Longitude</label>
+									<input type="text" id="lon-input" name="longitude" aria-label="Longitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs" />
 							</div>
 						</div>
 					</div>
@@ -144,7 +187,7 @@
 					<h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">MINY y0 Residency</h3>
 				</div>
 				<div id="y0-location-grid" class="flex flex-wrap gap-1.5"></div>
-				<a href="https://y0.minyvinyl.com/" target="_blank" class="block mt-3 p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 hover:border-accent/50 transition-all group relative overflow-hidden">
+				<a href="https://y0.minyvinyl.com/" target="_blank" class="block mt-3 p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 hover:border-accent/50 transition-colors group relative overflow-hidden">
 					<div class="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 					<div class="relative flex items-center gap-3">
 						<div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
@@ -156,7 +199,7 @@
 							<div class="text-[11px] font-bold text-white leading-tight">Global Residency Network</div>
 							<div class="text-[9px] text-slate-400 font-medium mt-0.5">14 cities across 11 countries</div>
 						</div>
-						<svg class="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-[color,transform] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 						</svg>
 					</div>
@@ -167,25 +210,41 @@
 
 			<div id="section-marker" class="space-y-4">
 				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">2. Marker & Route</h3>
+					<h3 class="text-sm font-semibold text-slate-900">2. Details</h3>
 					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">02</span>
 				</div>
 
 				<div class="space-y-4">
-					<div class="flex items-center justify-between">
-						<span class="label-sm mb-0">Show Location Marker</span>
-						<label class="relative inline-flex items-center cursor-pointer">
-							<input type="checkbox" id="show-marker-toggle" class="sr-only peer">
-							<div class="toggle-pill"></div>
-						</label>
-					</div>
+						<div class="flex items-center justify-between">
+								<label for="show-marker-toggle" class="label-sm mb-0">Show Location Marker</label>
+							<label class="relative inline-flex items-center cursor-pointer">
+								<input type="checkbox" id="show-marker-toggle" class="sr-only peer">
+								<div class="toggle-pill"></div>
+							</label>
+						</div>
 
-					<div id="marker-settings" class="space-y-4 hidden">
-						<div class="grid grid-cols-2 gap-3">
-							<div>
-								<span class="label-sm">Marker Symbol</span>
+						<div id="entity-legend-settings" class="space-y-2">
+							<div class="flex items-center justify-between">
+								<label for="show-legend-toggle" class="label-sm mb-0">Show Directory Legend</label>
+								<label class="relative inline-flex items-center cursor-pointer">
+									<input type="checkbox" id="show-legend-toggle" class="sr-only peer">
+									<div class="toggle-pill"></div>
+								</label>
+							</div>
+							<div class="flex justify-between items-center">
+									<label for="legend-scale-slider" class="label-sm mb-0">Directory Legend Size</label>
+								<span id="legend-scale-value" class="text-[9px] font-bold text-accent">1.0x</span>
+							</div>
+							<input type="range" id="legend-scale-slider" min="5" max="20" step="1" value="10" class="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
+						</div>
+
+						<div id="marker-settings" class="space-y-4 hidden">
+							<div class="grid grid-cols-2 gap-3">
+								<div>
+										<label for="marker-icon-select" class="label-sm">Marker Symbol</label>
 								<div class="relative">
-									<select id="marker-icon-select" class="input-field appearance-none cursor-pointer text-xs py-2">
+									<select id="marker-icon-select" name="marker-icon" aria-label="Marker symbol" class="input-field appearance-none cursor-pointer text-xs py-2">
+										<option value="hexagon">Hexagon</option>
 										<option value="pin">Default Pin</option>
 										<option value="circle">Modern Dot</option>
 										<option value="heart">Heart</option>
@@ -197,14 +256,14 @@
 									</svg>
 								</div>
 							</div>
-							<div>
-								<div class="flex justify-between items-center mb-1.5">
-									<span class="label-sm mb-0">Size</span>
-									<span id="marker-size-value" class="text-[9px] font-bold text-accent">40px</span>
+								<div>
+									<div class="flex justify-between items-center mb-1.5">
+											<label for="marker-size-slider" class="label-sm mb-0">Size</label>
+										<span id="marker-size-value" class="text-[9px] font-bold text-accent">40px</span>
+									</div>
+									<input type="range" id="marker-size-slider" min="10" max="120" step="2" value="40" class="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
 								</div>
-								<input type="range" id="marker-size-slider" min="10" max="120" step="2" value="40" class="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
 							</div>
-						</div>
 
 						<div class="bg-slate-50/50 rounded-2xl border border-slate-100 p-2 space-y-2">
 							<div class="flex items-center justify-between px-1.5 py-1">
@@ -215,13 +274,13 @@
 								<button id="clear-markers-btn" class="text-[9px] font-bold text-slate-400 hover:text-red-500 transition-colors uppercase tracking-tight">Clear All</button>
 							</div>
 							<div class="grid grid-cols-2 gap-2">
-								<button id="add-marker-btn" class="py-2.5 px-3 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-bold text-slate-600 hover:border-blue-200 hover:bg-blue-50/30 hover:text-blue-600 transition-all flex items-center justify-center space-x-2">
+								<button id="add-marker-btn" class="py-2.5 px-3 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-bold text-slate-600 hover:border-blue-200 hover:bg-blue-50/30 hover:text-blue-600 transition-colors flex items-center justify-center space-x-2">
 									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
 									</svg>
 									<span>Add Point</span>
 								</button>
-								<button id="remove-marker-btn" class="py-2.5 px-3 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-bold text-slate-600 hover:border-red-200 hover:bg-red-50/30 hover:text-red-600 transition-all flex items-center justify-center space-x-2">
+								<button id="remove-marker-btn" class="py-2.5 px-3 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-bold text-slate-600 hover:border-red-200 hover:bg-red-50/30 hover:text-red-600 transition-colors flex items-center justify-center space-x-2">
 									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4" />
 									</svg>
@@ -230,11 +289,35 @@
 							</div>
 						</div>
 
-						<p class="text-[9px] text-slate-400 italic text-center">Tip: You can drag the marker on the map to reposition it.</p>
+						<div class="rounded-2xl border border-slate-100 bg-white p-3 space-y-3">
+							<div class="flex items-center justify-between gap-3">
+								<div>
+									<div class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">Placement</div>
+									<div id="marker-placement-hint" class="mt-1 text-[10px] text-slate-500">Select a marker or place a new one on the map.</div>
+								</div>
+								<button id="place-marker-btn" type="button" class="shrink-0 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600 transition-colors hover:border-accent hover:text-accent">
+									Place On Map
+								</button>
+							</div>
+							<div id="selected-marker-panel" class="hidden rounded-xl bg-slate-50/80 border border-slate-100 px-3 py-3">
+								<div class="flex items-center justify-between gap-3">
+									<div>
+										<div class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">Selected Marker</div>
+										<div id="selected-marker-name" class="mt-1 text-[12px] font-semibold text-slate-900">Marker 1</div>
+										<div id="selected-marker-coords" class="mt-1 text-[10px] font-medium text-slate-500">0.0000, 0.0000</div>
+									</div>
+									<button id="remove-selected-marker-btn" type="button" class="shrink-0 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-red-500 transition-colors hover:bg-red-500 hover:text-white">
+										Remove
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<p class="text-[9px] text-slate-400 italic text-center">Tip: Drag markers to reposition. Click a marker to edit it. Double click removes it fast.</p>
 					</div>
 
 					<div class="flex items-center justify-between">
-						<span class="label-sm mb-0">Custom Route (A to B)</span>
+							<label for="show-route-toggle" class="label-sm mb-0">Custom Route (A to B)</label>
 						<label class="relative inline-flex items-center cursor-pointer">
 							<input type="checkbox" id="show-route-toggle" class="sr-only peer">
 							<div class="toggle-pill"></div>
@@ -258,21 +341,39 @@
 
 			<div id="section-style" class="space-y-4">
 				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">3. Map Style</h3>
+					<h3 class="text-sm font-semibold text-slate-900">3. Look</h3>
 					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">03</span>
 				</div>
 
 				<div class="space-y-4">
+					<div class="space-y-2">
+						<span class="label-sm">Quick Directions</span>
+						<div class="grid grid-cols-3 gap-2">
+							<button type="button" data-design-preset="editorial" class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left transition-colors hover:border-accent hover:bg-white">
+								<div class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-900">Editorial</div>
+								<div class="mt-1 text-[9px] text-slate-400">quiet, print-first</div>
+							</button>
+							<button type="button" data-design-preset="directory" class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left transition-colors hover:border-accent hover:bg-white">
+								<div class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-900">Directory</div>
+								<div class="mt-1 text-[9px] text-slate-400">pins and legend</div>
+							</button>
+							<button type="button" data-design-preset="neon" class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left transition-colors hover:border-accent hover:bg-white">
+								<div class="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-900">Neon</div>
+								<div class="mt-1 text-[9px] text-slate-400">night energy</div>
+							</button>
+						</div>
+					</div>
+
 					<div class="bg-slate-100 p-1 rounded-xl flex">
-						<button id="mode-tile" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all">Standard</button>
-						<button id="mode-artistic" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all">Artistic</button>
+						<button id="mode-tile" class="flex-1 py-2 text-xs font-bold rounded-lg transition-colors">Standard</button>
+						<button id="mode-artistic" class="flex-1 py-2 text-xs font-bold rounded-lg transition-colors">Artistic</button>
 					</div>
 
 					<div id="standard-theme-config" class="space-y-4">
 						<div>
-							<span class="label-sm">Color Theme</span>
+								<label for="theme-select" class="label-sm">Color Theme</label>
 							<div class="relative">
-								<select id="theme-select" class="input-field appearance-none cursor-pointer">
+									<select id="theme-select" name="theme" aria-label="Color theme" class="input-field appearance-none cursor-pointer">
 								</select>
 								<svg class="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -281,7 +382,7 @@
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="label-sm mb-0">Show Place Labels</span>
+								<label for="show-labels-toggle" class="label-sm mb-0">Show Place Labels</label>
 							<label class="relative inline-flex items-center cursor-pointer">
 								<input type="checkbox" id="show-labels-toggle" class="sr-only peer">
 								<div class="toggle-pill"></div>
@@ -302,14 +403,14 @@
 
 			<div id="section-composition" class="space-y-4">
 				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">4. Composition</h3>
+					<h3 class="text-sm font-semibold text-slate-900">4. Layout</h3>
 					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">04</span>
 				</div>
 
 				<div class="space-y-4">
 					<div>
 						<div class="flex justify-between items-center mb-2">
-							<span class="label-sm mb-0">Perspective Zoom</span>
+								<label for="zoom-slider" class="label-sm mb-0">Perspective Zoom</label>
 							<span id="zoom-value" class="text-xs font-bold text-accent bg-accent-light px-2 py-0.5 rounded-full">12</span>
 						</div>
 						<input type="range" id="zoom-slider" min="1" max="18" step="1" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
@@ -338,7 +439,7 @@
 						<div id="overlay-position-group">
 							<div class="flex items-center justify-between">
 								<span class="label-sm mb-0">Overlay Position</span>
-								<button id="reset-overlay-pos-btn" title="Reset to default position" class="flex items-center space-x-1 px-2 py-1 text-[9px] font-bold text-slate-400 hover:text-accent hover:bg-accent-light rounded-lg transition-all">
+								<button id="reset-overlay-pos-btn" title="Reset to default position" class="flex items-center space-x-1 px-2 py-1 text-[9px] font-bold text-slate-400 hover:text-accent hover:bg-accent-light rounded-lg transition-colors">
 									<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
 									</svg>
@@ -347,31 +448,31 @@
 							</div>
 							<div class="space-y-4 mt-1">
 								<div class="grid grid-cols-3 gap-1.5">
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.15" data-overlay-y="0.15" title="Top Left">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.15" data-overlay-y="0.15" title="Top Left">
 										<span class="pos-dot absolute top-1.5 left-1.5 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.5" data-overlay-y="0.15" title="Top Center">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.5" data-overlay-y="0.15" title="Top Center">
 										<span class="pos-dot absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.85" data-overlay-y="0.15" title="Top Right">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.85" data-overlay-y="0.15" title="Top Right">
 										<span class="pos-dot absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.15" data-overlay-y="0.5" title="Middle Left">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.15" data-overlay-y="0.5" title="Middle Left">
 										<span class="pos-dot absolute top-1/2 left-1.5 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.5" data-overlay-y="0.5" title="Center">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.5" data-overlay-y="0.5" title="Center">
 										<span class="pos-dot absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.85" data-overlay-y="0.5" title="Middle Right">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.85" data-overlay-y="0.5" title="Middle Right">
 										<span class="pos-dot absolute top-1/2 right-1.5 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.15" data-overlay-y="0.85" title="Bottom Left">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.15" data-overlay-y="0.85" title="Bottom Left">
 										<span class="pos-dot absolute bottom-1.5 left-1.5 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.5" data-overlay-y="0.85" title="Bottom Center">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.5" data-overlay-y="0.85" title="Bottom Center">
 										<span class="pos-dot absolute bottom-1.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
-									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-all" data-overlay-x="0.85" data-overlay-y="0.85" title="Bottom Right">
+									<button class="overlay-pos-btn relative aspect-square rounded-lg border border-slate-100 bg-slate-50 hover:border-accent hover:bg-white transition-colors" data-overlay-x="0.85" data-overlay-y="0.85" title="Bottom Right">
 										<span class="pos-dot absolute bottom-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-300 transition-colors"></span>
 									</button>
 								</div>
@@ -382,17 +483,20 @@
 				</div>
 			</div>
 
-			<div id="section-typography" class="space-y-4">
-				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">5. Typography</h3>
-					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">05</span>
-				</div>
-
-				<div class="space-y-4">
+			<details id="section-typography" class="space-y-4 rounded-[1.4rem] border border-slate-100 bg-slate-50/60 p-4">
+				<summary class="flex cursor-pointer list-none items-center justify-between">
 					<div>
-						<span class="label-sm">City Font</span>
+						<h3 class="text-sm font-semibold text-slate-900">Fine Tune Typography</h3>
+						<p class="mt-1 text-[10px] font-medium text-slate-400">Open only when you want to art direct type.</p>
+					</div>
+					<span class="w-5 h-5 bg-white rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">+</span>
+				</summary>
+
+				<div class="space-y-4 pt-4">
+					<div>
+							<label for="city-font-select" class="label-sm">City Font</label>
 						<div class="relative">
-							<select id="city-font-select" class="input-field appearance-none cursor-pointer">
+							<select id="city-font-select" name="city-font" aria-label="City font" class="input-field appearance-none cursor-pointer">
 								<option value="'Bebas Neue', sans-serif">Bebas Neue</option>
 								<option value="'Caveat', cursive">Caveat</option>
 								<option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
@@ -414,9 +518,9 @@
 					</div>
 
 					<div>
-						<span class="label-sm">Country Font</span>
+							<label for="country-font-select" class="label-sm">Country Font</label>
 						<div class="relative">
-							<select id="country-font-select" class="input-field appearance-none cursor-pointer">
+							<select id="country-font-select" name="country-font" aria-label="Country font" class="input-field appearance-none cursor-pointer">
 								<option value="'Caveat', cursive">Caveat</option>
 								<option value="'Inter', sans-serif">Inter</option>
 								<option value="'Lora', serif">Lora</option>
@@ -435,9 +539,9 @@
 					</div>
 
 					<div>
-						<span class="label-sm">Coordinates Font</span>
+							<label for="coords-font-select" class="label-sm">Coordinates Font</label>
 						<div class="relative">
-							<select id="coords-font-select" class="input-field appearance-none cursor-pointer">
+							<select id="coords-font-select" name="coordinates-font" aria-label="Coordinates font" class="input-field appearance-none cursor-pointer">
 								<option value="monospace">Monospace</option>
 								<option value="'Montserrat', sans-serif">Montserrat</option>
 								<option value="'Outfit', sans-serif">Outfit</option>
@@ -451,17 +555,20 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</details>
 
-			<div id="section-mat" class="space-y-4">
-				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">6. Mat / Passepartout</h3>
-					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">06</span>
-				</div>
+			<details id="section-mat" class="space-y-4 rounded-[1.4rem] border border-slate-100 bg-slate-50/60 p-4">
+				<summary class="flex cursor-pointer list-none items-center justify-between">
+					<div>
+						<h3 class="text-sm font-semibold text-slate-900">Fine Tune Framing</h3>
+						<p class="mt-1 text-[10px] font-medium text-slate-400">Mat, border, and presentation finish.</p>
+					</div>
+					<span class="w-5 h-5 bg-white rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">+</span>
+				</summary>
 
-				<div class="space-y-4">
+				<div class="space-y-4 pt-4">
 					<div class="flex items-center justify-between">
-						<span class="label-sm mb-0">Enable Mat</span>
+							<label for="mat-toggle" class="label-sm mb-0">Enable Mat</label>
 						<label class="relative inline-flex items-center cursor-pointer">
 							<input type="checkbox" id="mat-toggle" class="sr-only peer">
 							<div class="toggle-pill"></div>
@@ -471,14 +578,14 @@
 					<div id="mat-settings" class="space-y-4 hidden">
 						<div>
 							<div class="flex justify-between items-center mb-2">
-								<span class="label-sm mb-0">Mat Width</span>
+									<label for="mat-width-slider" class="label-sm mb-0">Mat Width</label>
 								<span id="mat-width-value" class="text-xs font-bold text-accent bg-accent-light px-2 py-0.5 rounded-full">40px</span>
 							</div>
 							<input type="range" id="mat-width-slider" min="10" max="200" step="5" value="40" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="label-sm mb-0">Show Inner Border</span>
+								<label for="mat-border-toggle" class="label-sm mb-0">Show Inner Border</label>
 							<label class="relative inline-flex items-center cursor-pointer">
 								<input type="checkbox" id="mat-border-toggle" class="sr-only peer" checked>
 								<div class="toggle-pill"></div>
@@ -488,7 +595,7 @@
 						<div id="mat-border-settings" class="space-y-4">
 							<div>
 								<div class="flex justify-between items-center mb-2">
-									<span class="label-sm mb-0">Border Thickness</span>
+										<label for="mat-border-width-slider" class="label-sm mb-0">Border Thickness</label>
 									<span id="mat-border-width-value" class="text-xs font-bold text-accent bg-accent-light px-2 py-0.5 rounded-full">1px</span>
 								</div>
 								<input type="range" id="mat-border-width-slider" min="1" max="10" step="1" value="1" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
@@ -496,7 +603,7 @@
 
 							<div>
 								<div class="flex justify-between items-center mb-2">
-									<span class="label-sm mb-0">Border Opacity</span>
+										<label for="mat-border-opacity-slider" class="label-sm mb-0">Border Opacity</label>
 									<span id="mat-border-opacity-value" class="text-xs font-bold text-accent bg-accent-light px-2 py-0.5 rounded-full">100%</span>
 								</div>
 								<input type="range" id="mat-border-opacity-slider" min="0" max="1" step="0.1" value="1" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-accent" />
@@ -504,29 +611,29 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</details>
 
 			<div id="section-output" class="space-y-4">
 				<div class="flex items-center justify-between">
-					<h3 class="text-sm font-semibold text-slate-900">7. Output Size</h3>
-					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">07</span>
+					<h3 class="text-sm font-semibold text-slate-900">5. Export</h3>
+					<span class="w-5 h-5 bg-slate-100 rounded-md flex items-center justify-center text-[10px] font-bold text-slate-400">05</span>
 				</div>
 
 				<div class="space-y-4">
 					<div class="grid grid-cols-2 gap-2">
-						<button class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-all duration-200 flex flex-col items-center justify-center space-y-1" data-width="1080" data-height="1080">
+						<button aria-label="Set output size to square 1080 by 1080 pixels" class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-[background-color,border-color,box-shadow] duration-200 flex flex-col items-center justify-center space-y-1" data-width="1080" data-height="1080">
 							<span>Square</span>
 							<span class="text-[9px] font-normal">1080 × 1080</span>
 						</button>
-						<button class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-all duration-200 flex flex-col items-center justify-center space-y-1" data-width="1080" data-height="1920">
+						<button aria-label="Set output size to story 1080 by 1920 pixels" class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-[background-color,border-color,box-shadow] duration-200 flex flex-col items-center justify-center space-y-1" data-width="1080" data-height="1920">
 							<span>Portrait</span>
 							<span class="text-[9px] font-normal">1080 × 1920</span>
 						</button>
-						<button class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-all duration-200 flex flex-col items-center justify-center space-y-1" data-width="1920" data-height="1080">
+						<button aria-label="Set output size to widescreen 1920 by 1080 pixels" class="preset-btn px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-[background-color,border-color,box-shadow] duration-200 flex flex-col items-center justify-center space-y-1" data-width="1920" data-height="1080">
 							<span>Landscape</span>
 							<span class="text-[9px] font-normal">1920 × 1080</span>
 						</button>
-						<button id="other-presets-btn" class="px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-all duration-200 flex flex-col items-center justify-center space-y-1">
+						<button id="other-presets-btn" class="px-4 py-3 text-[11px] font-semibold border border-slate-100 bg-slate-50 rounded-xl hover:bg-white hover:border-accent hover:shadow-sm transition-[background-color,border-color,box-shadow] duration-200 flex flex-col items-center justify-center space-y-1">
 							<span>Other</span>
 							<span class="text-[9px] font-normal">More Sizes</span>
 						</button>
@@ -534,15 +641,15 @@
 
 					<div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-2xl border border-dotted border-slate-200">
 						<div class="flex-1">
-							<input type="number" id="custom-w" placeholder="Width" min="100" max="50000" class="w-full bg-transparent border-none text-[11px] font-bold text-center focus:ring-0 p-0" />
+								<input type="number" id="custom-w" name="custom-width" aria-label="Custom output width" placeholder="Width" min="100" max="50000" class="w-full bg-transparent border-none text-[11px] font-bold text-center focus:ring-0 p-0" />
 						</div>
 						<span class="text-slate-300 text-xs">×</span>
 						<div class="flex-1">
-							<input type="number" id="custom-h" placeholder="Height" min="100" max="50000" class="w-full bg-transparent border-none text-[11px] font-bold text-center focus:ring-0 p-0" />
+								<input type="number" id="custom-h" name="custom-height" aria-label="Custom output height" placeholder="Height" min="100" max="50000" class="w-full bg-transparent border-none text-[11px] font-bold text-center focus:ring-0 p-0" />
 						</div>
 					</div>
 
-					<button id="reset-settings-btn" class="hidden md:flex w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all items-center justify-center space-x-2">
+					<button id="reset-settings-btn" class="hidden md:flex w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors items-center justify-center space-x-2">
 						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
 						</svg>
@@ -553,7 +660,7 @@
 		</div>
 
 		<div class="p-8 border-t border-slate-100 bg-slate-50/50 backdrop-blur-sm">
-			<button id="export-btn" class="w-full bg-slate-900 group-hover:bg-accent hover:bg-accent text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-slate-200 transition-all duration-300 flex items-center justify-center space-x-3 group active:scale-[0.98]">
+			<button id="export-btn" class="w-full bg-slate-900 group-hover:bg-accent hover:bg-accent text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-slate-200 transition-[background-color,box-shadow,transform] duration-300 flex items-center justify-center space-x-3 group active:scale-[0.98]">
 				<svg class="w-5 h-5 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
 				</svg>
@@ -568,14 +675,22 @@
 		</div>
 	</aside>
 
-	<main class="flex-1 overflow-hidden flex items-center justify-center p-4 pb-8 md:p-16 md:pb-16 relative bg-[#f0f4f8] perspective-lg">
-		<div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-40">
+		<main class="flex-1 overflow-hidden flex items-center justify-center p-4 pb-8 md:p-16 md:pb-16 relative bg-[#f0f4f8] perspective-lg">
+			<div id="floating-shell-actions" class="shell-floating-actions absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-auto z-[75] flex items-start justify-between pointer-events-none">
+				<button id="show-controls-fab" type="button" aria-label="Show controls" class="shell-hidden-only pointer-events-auto opacity-0 translate-y-2 inline-flex items-center gap-2 rounded-full bg-white/92 px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700 shadow-2xl shadow-slate-900/10 ring-1 ring-black/5 backdrop-blur-xl transition-[opacity,transform]">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					</svg>
+					<span>Show Controls</span>
+				</button>
+			</div>
+			<div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-40">
 			<div class="absolute -top-[15%] -left-[15%] w-[55%] h-[55%] bg-accent-soft blur-[100px] rounded-full"></div>
 			<div class="absolute -bottom-[15%] -right-[15%] w-[55%] h-[55%] bg-accent-soft blur-[100px] rounded-full"></div>
 			<div class="absolute top-[30%] right-[10%] w-[30%] h-[30%] bg-accent-soft blur-[90px] rounded-full opacity-50"></div>
 		</div>
 
-		<div id="poster-scaler" class="transition-all duration-500 ease-out origin-center">
+		<div id="poster-scaler" class="transition-transform duration-500 ease-out origin-center">
 			<div id="poster-container" class="relative bg-white shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] ring-1 ring-black/5 overflow-hidden">
 				<div id="map-preview" class="absolute inset-0 z-0 grayscale-[0.2]"></div>
 				<div id="artistic-map" class="absolute inset-0 z-[1]"></div>
@@ -598,10 +713,16 @@
 			</div>
 		</div>
 
-		<div class="absolute bottom-8 right-8 flex flex-col items-end space-y-3 pointer-events-none">
-			<div class="glass-card px-4 py-2 rounded-full flex items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-				<kbd class="text-[10px] bg-slate-800 text-white px-1.5 py-0.5 rounded font-bold uppercase">Shift</kbd>
-				<span class="text-[11px] font-semibold text-slate-500 italic">Scroll to zoom map</span>
+			<div class="absolute bottom-8 right-8 flex flex-col items-end space-y-3 pointer-events-none">
+				<button id="floating-export-btn" type="button" aria-label="Export poster" class="shell-hidden-only pointer-events-auto opacity-0 translate-y-2 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-white shadow-2xl shadow-slate-900/20 transition-[opacity,transform]">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+					</svg>
+					<span>Export</span>
+				</button>
+				<div class="glass-card px-4 py-2 rounded-full flex items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
+					<kbd class="text-[10px] bg-slate-800 text-white px-1.5 py-0.5 rounded font-bold uppercase">Shift</kbd>
+					<span class="text-[11px] font-semibold text-slate-500 italic">Scroll to zoom map</span>
 			</div>
 		</div>
 	</main>
@@ -614,7 +735,7 @@
 					<h2 class="text-lg font-bold text-slate-900">Location &amp; Markers</h2>
 					<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Define Location · Marker &amp; Route</p>
 				</div>
-				<button class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-a">
+					<button aria-label="Close location and markers sheet" class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-a">
 					<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -622,7 +743,7 @@
 			</div>
 			<div id="mobile-sheet-a-content" class="flex-1 overflow-y-auto px-6 py-5 space-y-6 no-scrollbar"></div>
 			<div class="flex-shrink-0 px-6 py-4 border-t border-slate-100">
-				<button id="mobile-reset-a-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-all flex items-center justify-center space-x-2">
+				<button id="mobile-reset-a-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-colors flex items-center justify-center space-x-2">
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
 					</svg>
@@ -640,7 +761,7 @@
 					<h2 class="text-lg font-bold text-slate-900">Map Style</h2>
 					<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Map Style · Composition · Typography</p>
 				</div>
-				<button class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-b">
+					<button aria-label="Close map style sheet" class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-b">
 					<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -648,7 +769,7 @@
 			</div>
 			<div id="mobile-sheet-b-content" class="flex-1 overflow-y-auto px-6 py-5 space-y-6 no-scrollbar"></div>
 			<div class="flex-shrink-0 px-6 py-4 border-t border-slate-100">
-				<button id="mobile-reset-b-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-all flex items-center justify-center space-x-2">
+				<button id="mobile-reset-b-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-colors flex items-center justify-center space-x-2">
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
 					</svg>
@@ -666,7 +787,7 @@
 					<h2 class="text-lg font-bold text-slate-900">Output</h2>
 					<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Mat / Passepartout · Output Size</p>
 				</div>
-				<button class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-c">
+					<button aria-label="Close output sheet" class="close-sheet-btn w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" data-sheet="mobile-sheet-c">
 					<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -674,7 +795,7 @@
 			</div>
 			<div id="mobile-sheet-c-content" class="flex-1 overflow-y-auto px-6 py-5 space-y-6 no-scrollbar"></div>
 			<div class="flex-shrink-0 px-6 py-4 border-t border-slate-100">
-				<button id="mobile-reset-c-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-all flex items-center justify-center space-x-2">
+				<button id="mobile-reset-c-btn" class="w-full py-3 px-4 rounded-xl border border-red-50 bg-red-50/50 text-[10px] font-bold uppercase tracking-wider text-red-400 active:bg-red-500 active:text-white active:border-red-500 transition-colors flex items-center justify-center space-x-2">
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
 					</svg>
@@ -692,7 +813,7 @@
 					<h2 class="text-2xl font-bold text-slate-900">MINY<span class="text-accent">ATION</span></h2>
 					<p class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">The First Music Republic</p>
 				</div>
-				<button id="close-credits" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
+					<button id="close-credits" aria-label="Close credits dialog" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
 					<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -707,14 +828,14 @@
 						<h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">VE Built It</h3>
 					</div>
 					<div class="grid grid-cols-2 gap-3">
-						<a href="https://velab.org" target="_blank" class="flex flex-col items-center p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-all group">
+						<a href="https://velab.org" target="_blank" class="flex flex-col items-center p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-colors group">
 							<div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
 								<span class="text-white font-black text-sm tracking-tight">VE</span>
 							</div>
 							<span class="text-[10px] font-bold text-slate-600 group-hover:text-slate-900 transition-colors">VE LAB</span>
 							<span class="text-[8px] text-slate-400 mt-0.5">Studio & Technology</span>
 						</a>
-						<a href="https://minyvinyl.com" target="_blank" class="flex flex-col items-center p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-all group">
+						<a href="https://minyvinyl.com" target="_blank" class="flex flex-col items-center p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-colors group">
 							<div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
 								<span class="text-white font-black text-sm tracking-tight">MINY</span>
 							</div>
@@ -729,7 +850,7 @@
 						<div class="w-1 h-5 bg-accent rounded-full"></div>
 						<h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Inspired By</h3>
 					</div>
-					<a href="https://github.com/dimartarmizi/map-to-poster" target="_blank" class="block p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-all group">
+					<a href="https://github.com/dimartarmizi/map-to-poster" target="_blank" class="block p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-accent hover:bg-white transition-colors group">
 						<div class="flex items-center gap-3">
 							<div class="w-10 h-10 bg-slate-200 rounded-xl flex items-center justify-center group-hover:bg-accent/10 transition-colors">
 								<svg class="w-5 h-5 text-slate-400 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -783,7 +904,7 @@
 					<h2 class="text-2xl font-bold text-slate-900">More Artistic Themes</h2>
 					<p class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Choose from more palettes</p>
 				</div>
-				<button id="close-artistic-modal" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
+					<button id="close-artistic-modal" aria-label="Close theme library" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
 					<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -807,7 +928,7 @@
 					<h2 id="custom-theme-modal-title" class="text-xl font-bold text-slate-900">Create Custom Theme</h2>
 					<p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-0.5">Saved in your browser</p>
 				</div>
-				<button id="close-custom-theme-modal" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
+					<button id="close-custom-theme-modal" aria-label="Close custom theme editor" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
 					<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
@@ -817,12 +938,12 @@
 			<div class="flex-1 overflow-y-auto p-6 space-y-5 no-scrollbar">
 				<div class="space-y-3">
 					<div>
-						<label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Theme Name *</label>
-						<input id="ct-name" type="text" maxlength="40" placeholder="My Custom Theme" class="mt-1.5 w-full input-field" />
+							<label for="ct-name" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Theme Name *</label>
+							<input id="ct-name" name="custom-theme-name" aria-label="Theme name" type="text" maxlength="40" autocomplete="off" placeholder="My Custom Theme…" class="mt-1.5 w-full input-field" />
 					</div>
 					<div>
-						<label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</label>
-						<input id="ct-desc" type="text" maxlength="80" placeholder="Optional short description" class="mt-1.5 w-full input-field" />
+							<label for="ct-desc" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</label>
+							<input id="ct-desc" name="custom-theme-description" aria-label="Theme description" type="text" maxlength="80" autocomplete="off" placeholder="Optional short description…" class="mt-1.5 w-full input-field" />
 					</div>
 				</div>
 
@@ -833,14 +954,14 @@
 							<input type="color" id="ct-bg" value="#0B0B16" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Background</div>
-								<input type="text" id="ct-bg-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#0b0b16" />
+									<input type="text" id="ct-bg-hex" name="background-hex" aria-label="Background color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#0b0b16" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-text" value="#ffffff" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Text / Labels</div>
-								<input type="text" id="ct-text-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#ffffff" />
+									<input type="text" id="ct-text-hex" name="text-hex" aria-label="Text color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#ffffff" />
 							</div>
 						</div>
 					</div>
@@ -853,14 +974,14 @@
 							<input type="color" id="ct-water" value="#071020" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Water</div>
-								<input type="text" id="ct-water-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#071020" />
+									<input type="text" id="ct-water-hex" name="water-hex" aria-label="Water color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#071020" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-parks" value="#111122" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Parks</div>
-								<input type="text" id="ct-parks-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#111122" />
+									<input type="text" id="ct-parks-hex" name="parks-hex" aria-label="Parks color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#111122" />
 							</div>
 						</div>
 					</div>
@@ -873,42 +994,42 @@
 							<input type="color" id="ct-road-motorway" value="#FF2AE6" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Motorway</div>
-								<input type="text" id="ct-road-motorway-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#ff2ae6" />
+									<input type="text" id="ct-road-motorway-hex" name="motorway-hex" aria-label="Motorway color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#ff2ae6" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-road-primary" value="#00E5FF" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Primary</div>
-								<input type="text" id="ct-road-primary-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#00e5ff" />
+									<input type="text" id="ct-road-primary-hex" name="primary-road-hex" aria-label="Primary road color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#00e5ff" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-road-secondary" value="#00BEBE" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Secondary</div>
-								<input type="text" id="ct-road-secondary-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#00bebe" />
+									<input type="text" id="ct-road-secondary-hex" name="secondary-road-hex" aria-label="Secondary road color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#00bebe" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-road-tertiary" value="#008F95" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tertiary</div>
-								<input type="text" id="ct-road-tertiary-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#008f95" />
+									<input type="text" id="ct-road-tertiary-hex" name="tertiary-road-hex" aria-label="Tertiary road color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#008f95" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-road-residential" value="#005E66" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Residential</div>
-								<input type="text" id="ct-road-residential-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#005e66" />
+									<input type="text" id="ct-road-residential-hex" name="residential-road-hex" aria-label="Residential road color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#005e66" />
 							</div>
 						</div>
 						<div class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-xl">
 							<input type="color" id="ct-road-default" value="#008F95" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Default</div>
-								<input type="text" id="ct-road-default-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#008f95" />
+									<input type="text" id="ct-road-default-hex" name="default-road-hex" aria-label="Default road color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#008f95" />
 							</div>
 						</div>
 					</div>
@@ -921,7 +1042,7 @@
 							<input type="color" id="ct-route" value="#EAB308" class="w-9 h-9 rounded-lg cursor-pointer shrink-0 border-0 p-0" />
 							<div class="min-w-0">
 								<div class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Route Color</div>
-								<input type="text" id="ct-route-hex" maxlength="7" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#eab308" />
+									<input type="text" id="ct-route-hex" name="route-hex" aria-label="Route color hex" maxlength="7" autocomplete="off" spellcheck="false" class="text-xs font-mono text-slate-700 bg-transparent border-0 outline-none w-full p-0" placeholder="#eab308" />
 							</div>
 						</div>
 					</div>
@@ -946,7 +1067,7 @@
 					<h2 class="text-2xl font-bold text-slate-900">Output Presets</h2>
 					<p class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Select your poster dimensions</p>
 				</div>
-				<button id="close-modal" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
+					<button id="close-modal" aria-label="Close output presets dialog" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors">
 					<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>

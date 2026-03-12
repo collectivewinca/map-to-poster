@@ -214,7 +214,7 @@ export function setupOverlaySettings() {
 				presets.forEach(p => {
 					const isActive = state.width === p.width && state.height === p.height;
 					const btn = document.createElement('button');
-					btn.className = `modal-preset-btn group flex flex-col items-start p-4 border ${isActive ? 'border-accent bg-accent-light' : 'border-slate-100 bg-slate-50/50'} rounded-2xl hover:border-accent hover:bg-white hover:shadow-xl transition-all text-left`;
+					btn.className = `modal-preset-btn group flex flex-col items-start p-4 border ${isActive ? 'border-accent bg-accent-light' : 'border-slate-100 bg-slate-50/50'} rounded-2xl hover:border-accent hover:bg-white hover:shadow-xl transition-colors text-left`;
 					btn.dataset.width = p.width;
 					btn.dataset.height = p.height;
 					const nameSpan = document.createElement('span');

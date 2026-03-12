@@ -59,6 +59,7 @@ export function updatePreviewStyles(currentState) {
 
 	[mapPreview, artisticMapDiv].forEach(el => {
 		if (el) {
+			el.style.position = 'absolute';
 			el.style.top = `${matWidth}px`;
 			el.style.left = `${matWidth}px`;
 			el.style.right = `${matWidth}px`;

@@ -5,15 +5,60 @@ import { getMap, getArtisticMap } from './map-init.js';
 
 let markers = [];
 let artisticMarkers = [];
+let selectedMarkerIndex = 0;
+let placementMode = false;
 
 export function getMarkers() { return markers; }
 export function getArtisticMarkers() { return artisticMarkers; }
+export function getSelectedMarkerIndex() { return selectedMarkerIndex; }
+export function getMarkerPlacementMode() { return placementMode; }
 
 export function clearMarkers() {
 	markers.forEach(m => m.remove());
 	artisticMarkers.forEach(m => m.remove());
 	markers = [];
 	artisticMarkers = [];
+}
+
+function clampSelectedMarkerIndex(markerList) {
+	if (!markerList.length) {
+		selectedMarkerIndex = -1;
+		return;
+	}
+	if (selectedMarkerIndex < 0 || selectedMarkerIndex >= markerList.length) {
+		selectedMarkerIndex = markerList.length - 1;
+	}
+}
+
+export function selectMarker(index) {
+	selectedMarkerIndex = index;
+	updateMarkerStyles(state);
+}
+
+export function setMarkerPlacementMode(enabled) {
+	placementMode = !!enabled;
+}
+
+export function placeMarkerAt(lat, lon, options = {}) {
+	const nextMarkers = [...(state.markers || []), { lat, lon }];
+	selectedMarkerIndex = nextMarkers.length - 1;
+	updateState({
+		showMarker: true,
+		markers: nextMarkers
+	});
+	if (options.keepPlacementMode !== true) {
+		placementMode = false;
+	}
+}
+
+export function removeSelectedMarker() {
+	if (!state.markers || selectedMarkerIndex < 0 || selectedMarkerIndex >= state.markers.length) return;
+	const nextMarkers = state.markers.filter((_, index) => index !== selectedMarkerIndex);
+	selectedMarkerIndex = Math.min(selectedMarkerIndex, nextMarkers.length - 1);
+	updateState({
+		markers: nextMarkers,
+		showMarker: nextMarkers.length > 0 ? state.showMarker : false
+	});
 }
 
 function getIconAnchor(iconName, size) {
@@ -36,6 +81,7 @@ export function updateMarkerStyles(currentState) {
 	const iconType = currentState.markerIcon || 'pin';
 	const baseSize = 40;
 	const size = Math.round(baseSize * (currentState.markerSize || 1));
+	clampSelectedMarkerIndex(currentState.markers || []);
 
 	const isArtistic = currentState.renderMode === 'artistic';
 	const theme = isArtistic ? getSelectedArtisticTheme() : getSelectedTheme();
@@ -48,8 +94,9 @@ export function updateMarkerStyles(currentState) {
 	const anchorY = iconType === 'pin' ? size : size / 2;
 
 	(currentState.markers || []).forEach((markerData, index) => {
+		const isSelected = index === selectedMarkerIndex;
 		const icon = L.divIcon({
-			className: 'custom-marker',
+			className: `custom-marker${isSelected ? ' selected' : ''}`,
 			html: html,
 			iconSize: [size, size],
 			iconAnchor: [anchorX, anchorY]
@@ -67,8 +114,14 @@ export function updateMarkerStyles(currentState) {
 			updateState({ markers: newMarkers });
 		});
 
+		lMarker.on('click', (e) => {
+			L.DomEvent.stopPropagation(e);
+			selectMarker(index);
+		});
+
 		lMarker.on('dblclick', (e) => {
 			L.DomEvent.stopPropagation(e);
+			selectedMarkerIndex = Math.max(0, index - 1);
 			const newMarkers = currentState.markers.filter((_, i) => i !== index);
 			updateState({ markers: newMarkers });
 		});
@@ -85,9 +138,17 @@ export function updateMarkerStyles(currentState) {
 				const parser = new DOMParser();
 				const svgDoc = parser.parseFromString(html, 'text/html');
 				while (svgDoc.body.firstChild) el.appendChild(svgDoc.body.firstChild);
+				el.classList.toggle('selected', isSelected);
+				el.style.cursor = 'pointer';
+
+				el.addEventListener('click', (e) => {
+					e.stopPropagation();
+					selectMarker(index);
+				});
 
 				el.addEventListener('dblclick', (e) => {
 					e.stopPropagation();
+					selectedMarkerIndex = Math.max(0, index - 1);
 					const newMarkers = currentState.markers.filter((_, i) => i !== index);
 					updateState({ markers: newMarkers });
 				});
@@ -128,9 +189,11 @@ export function updateMarkerVisibility(show) {
 export function updateMarkerPosition(lat, lon) {
 	const newMarkers = [...state.markers];
 	if (newMarkers.length > 0) {
-		newMarkers[0] = { lat, lon };
+		const targetIndex = selectedMarkerIndex >= 0 ? selectedMarkerIndex : 0;
+		newMarkers[targetIndex] = { lat, lon };
 		updateState({ markers: newMarkers });
 	} else {
+		selectedMarkerIndex = 0;
 		updateState({ markers: [{ lat, lon }] });
 	}
 }

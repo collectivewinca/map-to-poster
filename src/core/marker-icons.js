@@ -1,4 +1,8 @@
 export const markerIcons = {
+	hexagon: `<svg class="marker-pin" width="100" height="100" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+			<path d="M7 3.75h10L22 12l-5 8.25H7L2 12l5-8.25z" />
+			<circle cx="12" cy="12" r="2.2" fill="white" fill-opacity="0.92" />
+		</svg>`,
 	pin: `<svg class="marker-pin" width="100" height="100" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
 			<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
 		</svg>`,

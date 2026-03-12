@@ -4,7 +4,7 @@ import { markerIcons } from '../core/marker-icons.js';
 import { findBestInsertIndex } from '../core/utils.js';
 import { updateRouteGeometry, syncRouteMarkers, setMapLibreGL } from './route-manager.js';
 import { generateMapLibreStyle } from './artistic-style.js';
-import { clearMarkers } from './marker-manager.js';
+import { clearMarkers, getMarkerPlacementMode, placeMarkerAt } from './marker-manager.js';
 
 let map = null;
 let tileLayer = null;
@@ -16,14 +16,34 @@ let styleChangeInProgress = false;
 let pendingArtisticStyle = null;
 let pendingArtisticThemeName = null;
 let maplibreLoadPromise = null;
+let maplibreCssPromise = null;
 
 export const getMap = () => map;
 export const getArtisticMap = () => artisticMap;
 
+function ensureMapLibreStyles() {
+	if (maplibreCssPromise) return maplibreCssPromise;
+	maplibreCssPromise = new Promise((resolve, reject) => {
+		if (document.querySelector('link[data-maplibre-css="true"]')) {
+			resolve();
+			return;
+		}
+
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
+		link.dataset.maplibreCss = 'true';
+		link.onload = () => resolve();
+		link.onerror = () => reject(new Error('Failed to load MapLibre CSS'));
+		document.head.appendChild(link);
+	});
+	return maplibreCssPromise;
+}
+
 async function loadMapLibre() {
 	if (maplibregl) return maplibregl;
 	if (maplibreLoadPromise) return maplibreLoadPromise;
-	maplibreLoadPromise = import('maplibre-gl').then(mod => {
+	maplibreLoadPromise = Promise.all([ensureMapLibreStyles(), import('maplibre-gl')]).then(([, mod]) => {
 		maplibregl = mod.default || mod;
 		setMapLibreGL(maplibregl);
 		return maplibregl;
@@ -65,6 +85,11 @@ export function initMap(containerId, initialCenter, initialZoom, initialTileUrl)
 		}
 
 		isSyncing = false;
+	});
+
+	map.on('click', (e) => {
+		if (!getMarkerPlacementMode()) return;
+		placeMarkerAt(e.latlng.lat, e.latlng.lng);
 	});
 
 	if (state.renderMode === 'artistic') {
@@ -192,6 +217,11 @@ function initArtisticMap(containerId, center, zoom) {
 
 	artisticMap.on('mouseleave', 'route-line', () => {
 		artisticMap.getCanvas().style.cursor = '';
+	});
+
+	artisticMap.on('click', (e) => {
+		if (!getMarkerPlacementMode()) return;
+		placeMarkerAt(e.lngLat.lat, e.lngLat.lng);
 	});
 }
 

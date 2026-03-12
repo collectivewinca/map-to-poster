@@ -94,8 +94,10 @@ function render(container) {
 			const filterRow = el('div', 'flex flex-wrap gap-1');
 			filters.forEach(f => {
 				const isActive = f === activeFilter;
-				const btn = el('button', `nearby-filter px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md transition-all ${isActive ? 'bg-accent text-white' : 'bg-slate-100 text-slate-400 hover:text-slate-600'}`);
-				btn.textContent = f === 'all' ? 'All' : categoryLabel(f) + 's';
+					const btn = el('button', `nearby-filter px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md transition-colors ${isActive ? 'bg-accent text-white' : 'bg-slate-100 text-slate-400 hover:text-slate-600'}`);
+					btn.setAttribute('type', 'button');
+					btn.setAttribute('aria-label', `Filter nearby results by ${f === 'all' ? 'all categories' : categoryLabel(f)}`);
+					btn.textContent = f === 'all' ? 'All' : categoryLabel(f) + 's';
 				btn.addEventListener('click', () => {
 					activeFilter = f;
 					render(container);
@@ -122,7 +124,7 @@ function render(container) {
 }
 
 function buildCard(entity, rootContainer) {
-	const card = el('div', 'nearby-card group rounded-xl border border-slate-100 hover:border-slate-200 transition-all overflow-hidden');
+	const card = el('div', 'nearby-card group rounded-xl border border-slate-100 hover:border-slate-200 transition-colors overflow-hidden');
 
 	const row = el('div', 'flex items-center gap-2.5 p-2.5 cursor-pointer');
 
@@ -150,7 +152,9 @@ function buildCard(entity, rootContainer) {
 
 	// Pin to map button
 	const pinned = isEntityPinned(entity.id);
-	const pinBtn = el('button', `flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md transition-all ${pinned ? 'bg-accent/10 text-accent' : 'text-slate-300 hover:text-accent hover:bg-slate-50'}`);
+	const pinBtn = el('button', `flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md transition-colors ${pinned ? 'bg-accent/10 text-accent' : 'text-slate-300 hover:text-accent hover:bg-slate-50'}`);
+	pinBtn.setAttribute('type', 'button');
+	pinBtn.setAttribute('aria-label', pinned ? `Remove ${entity.name} from map` : `Pin ${entity.name} to map`);
 	pinBtn.title = pinned ? 'Remove from map' : 'Pin to map';
 	pinBtn.appendChild(svgIcon(
 		pinned
@@ -172,7 +176,7 @@ function buildCard(entity, rootContainer) {
 	if (expandedEntity === entity.id) {
 		const detailBox = el('div', 'px-2.5 pb-2.5');
 		const loading = el('div', 'text-[9px] text-slate-400 animate-pulse');
-		loading.textContent = 'Loading...';
+			loading.textContent = 'Loading…';
 		detailBox.appendChild(loading);
 		card.appendChild(detailBox);
 
@@ -240,7 +244,7 @@ function buildEmptyState() {
 	const encodedCountry = encodeURIComponent(currentCountry || '');
 	const generatorUrl = `https://rapidconnect.minyvinyl.com/generator${encodedCity ? `?city=${encodedCity}&country=${encodedCountry}` : ''}`;
 
-	const a = el('a', 'block p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 hover:border-accent/50 transition-all group relative overflow-hidden');
+	const a = el('a', 'block p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 hover:border-accent/50 transition-colors group relative overflow-hidden');
 	a.href = generatorUrl;
 	a.target = '_blank';
 	a.rel = 'noopener';
@@ -284,7 +288,7 @@ function buildEcosystemLinks() {
 	];
 
 	links.forEach(({ href, label, icon }) => {
-		const a = el('a', 'flex-1 flex items-center justify-center gap-1 px-2 py-2 rounded-lg bg-slate-50 border border-slate-100 hover:border-accent/30 transition-all group');
+		const a = el('a', 'flex-1 flex items-center justify-center gap-1 px-2 py-2 rounded-lg bg-slate-50 border border-slate-100 hover:border-accent/30 transition-colors group');
 		a.href = href;
 		a.target = '_blank';
 		a.rel = 'noopener';

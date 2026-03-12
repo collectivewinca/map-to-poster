@@ -35,10 +35,12 @@ export const defaultState = {
 	markers: [
 		{ lat: -6.2088, lon: 106.8456 }
 	],
-	markerIcon: 'pin',
+	markerIcon: 'hexagon',
 	markerSize: 1,
 	entityMarkers: [],
 	showEntityMarkers: true,
+	showEntityLegend: true,
+	entityLegendScale: 1,
 	showRoute: false,
 	routeStartLat: -6.2088,
 	routeStartLon: 106.8456,
@@ -84,6 +86,8 @@ const SAVED_KEYS = [
 	'markerSize',
 	'entityMarkers',
 	'showEntityMarkers',
+	'showEntityLegend',
+	'entityLegendScale',
 	'showRoute',
 	'routeStartLat',
 	'routeStartLon',

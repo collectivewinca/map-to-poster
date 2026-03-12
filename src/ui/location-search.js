@@ -198,7 +198,8 @@ export function setupLocationSearch() {
 		y0Locations.forEach(loc => {
 			const btn = document.createElement('button');
 			btn.type = 'button';
-			btn.className = 'y0-loc-btn px-2.5 py-1 text-[10px] font-semibold rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-all';
+			btn.className = 'y0-loc-btn px-2.5 py-1 text-[10px] font-semibold rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors';
+			btn.setAttribute('aria-label', `Select ${loc.name}, ${loc.country}`);
 			btn.textContent = loc.name;
 			btn.addEventListener('click', () => {
 				updateState({

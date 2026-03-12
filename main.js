@@ -34,6 +34,7 @@ scheduleNearbyUpdate(state);
 
 const exportBtn = document.getElementById('export-btn');
 const mobileExportBtn = document.getElementById('mobile-export-btn');
+const floatingExportBtn = document.getElementById('floating-export-btn');
 const posterContainer = document.getElementById('poster-container');
 
 let _exportCheckInProgress = false;
@@ -59,7 +60,7 @@ subscribe((currentState) => {
 });
 
 function setExportButtonLoading(loading, mode = 'loading') {
-	const buttons = [exportBtn, mobileExportBtn].filter(Boolean);
+		const buttons = [exportBtn, mobileExportBtn, floatingExportBtn].filter(Boolean);
 	if (loading && mode === 'loading' && exportLoadingMode === 'processing') return;
 
 	if (loading) exportLoadingMode = mode; else exportLoadingMode = null;
@@ -125,6 +126,16 @@ exportBtn.addEventListener('click', async () => {
 });
 
 mobileExportBtn?.addEventListener('click', async () => {
+	const filename = `MINYATION-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
+	setExportButtonLoading(true, 'processing');
+	try {
+		await exportToPNG(posterContainer, filename, null);
+	} finally {
+		setExportButtonLoading(false);
+	}
+});
+
+floatingExportBtn?.addEventListener('click', async () => {
 	const filename = `MINYATION-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
 	setExportButtonLoading(true, 'processing');
 	try {

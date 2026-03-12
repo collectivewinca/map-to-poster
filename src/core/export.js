@@ -1,8 +1,16 @@
-import html2canvas from 'html2canvas';
 import { getMapInstance, getArtisticMapInstance } from '../map/map-init.js';
 import { state, getSelectedTheme, getSelectedArtisticTheme } from './state.js';
 import { markerIcons as markerIcons } from './marker-icons.js';
 import { hexToRgba } from './utils.js';
+
+let html2canvasPromise = null;
+
+async function getHtml2Canvas() {
+	if (!html2canvasPromise) {
+		html2canvasPromise = import('html2canvas').then((mod) => mod.default || mod);
+	}
+	return html2canvasPromise;
+}
 
 function project(lat, lon, scale) {
 	const siny = Math.sin(lat * Math.PI / 180);
@@ -346,6 +354,7 @@ export async function exportToPNG(element, filename, statusElement, options = {}
 		}
 		const scale = logicalContainerWidth > 0 ? (outputW / logicalContainerWidth) : 1;
 
+		const html2canvas = await getHtml2Canvas();
 		const overlayCanvas = await html2canvas(element, {
 			useCORS: true,
 			scale: scale,

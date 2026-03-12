@@ -60,8 +60,9 @@ export function setupThemePicker() {
 			const label = theme && theme.name ? theme.name : (isOther ? 'Other Theme' : key);
 			const el = document.createElement('button');
 			el.type = 'button';
+			el.setAttribute('aria-label', `Select ${label}`);
 			el.dataset.key = key;
-			el.className = 'art-card group p-3 rounded-2xl border border-slate-100 bg-slate-50 flex flex-col items-center text-center hover:shadow-xl transition-all';
+			el.className = 'art-card group p-3 rounded-2xl border border-slate-100 bg-slate-50 flex flex-col items-center text-center hover:shadow-xl transition-colors';
 			const swatchDiv = document.createElement('div');
 			swatchDiv.className = 'flex items-center justify-center -space-x-2';
 			p.forEach(color => {
@@ -232,11 +233,13 @@ export function setupThemePicker() {
 		btnRow.className = 'flex gap-2';
 		const createBtn = document.createElement('button');
 		createBtn.id = 'create-custom-theme-btn';
-		createBtn.className = 'flex-1 flex items-center gap-2 p-3.5 border-2 border-dashed border-slate-200 rounded-2xl hover:border-accent hover:bg-accent/5 transition-all text-slate-400 hover:text-accent';
+		createBtn.type = 'button';
+		createBtn.className = 'flex-1 flex items-center gap-2 p-3.5 border-2 border-dashed border-slate-200 rounded-2xl hover:border-accent hover:bg-accent/5 transition-colors text-slate-400 hover:text-accent';
 		createBtn.textContent = 'Create Theme';
 		const importBtn = document.createElement('button');
 		importBtn.id = 'import-custom-themes-btn';
-		importBtn.className = 'flex items-center gap-2 px-4 py-3.5 border-2 border-dashed border-slate-200 rounded-2xl hover:border-accent hover:bg-accent/5 transition-all text-slate-400 hover:text-accent';
+		importBtn.type = 'button';
+		importBtn.className = 'flex items-center gap-2 px-4 py-3.5 border-2 border-dashed border-slate-200 rounded-2xl hover:border-accent hover:bg-accent/5 transition-colors text-slate-400 hover:text-accent';
 		importBtn.textContent = 'Import';
 		btnRow.appendChild(createBtn);
 		btnRow.appendChild(importBtn);
@@ -247,6 +250,7 @@ export function setupThemePicker() {
 		fileInput.id = 'import-custom-themes-file';
 		fileInput.accept = '.json,application/json';
 		fileInput.className = 'hidden';
+		fileInput.setAttribute('aria-label', 'Import custom themes JSON file');
 		container.appendChild(fileInput);
 
 		// Custom themes section
@@ -262,12 +266,14 @@ export function setupThemePicker() {
 
 			const actions = document.createElement('div');
 			actions.className = 'flex items-center gap-2';
-			const exportBtn2 = document.createElement('button');
-			exportBtn2.id = 'export-custom-themes-btn';
+				const exportBtn2 = document.createElement('button');
+				exportBtn2.id = 'export-custom-themes-btn';
+				exportBtn2.type = 'button';
 			exportBtn2.className = 'text-[10px] font-bold text-slate-400 hover:text-accent transition-colors';
 			exportBtn2.textContent = 'Export';
-			const deleteAllBtn = document.createElement('button');
-			deleteAllBtn.id = 'delete-all-custom-themes-btn';
+				const deleteAllBtn = document.createElement('button');
+				deleteAllBtn.id = 'delete-all-custom-themes-btn';
+				deleteAllBtn.type = 'button';
 			deleteAllBtn.className = 'text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors';
 			deleteAllBtn.textContent = 'Delete All';
 			actions.appendChild(exportBtn2);
@@ -278,10 +284,12 @@ export function setupThemePicker() {
 			customKeys.forEach(key => {
 				const t = customThemes[key];
 				const row = document.createElement('div');
-				row.className = 'flex items-center gap-2 p-3 border border-slate-100 rounded-2xl hover:shadow-md transition-all';
+				row.className = 'flex items-center gap-2 p-3 border border-slate-100 rounded-2xl hover:shadow-md transition-colors';
 				row.setAttribute('data-search-row', '');
 
 				const selectBtn = document.createElement('button');
+				selectBtn.type = 'button';
+				selectBtn.setAttribute('aria-label', `Select custom theme ${t.name || key}`);
 				selectBtn.className = 'artistic-modal-item flex-1 flex items-center gap-3 text-left';
 				selectBtn.dataset.key = key;
 				const nameDiv = document.createElement('div');
@@ -296,6 +304,8 @@ export function setupThemePicker() {
 				selectBtn.appendChild(nameDiv);
 
 				const editBtn = document.createElement('button');
+				editBtn.type = 'button';
+				editBtn.setAttribute('aria-label', `Edit custom theme ${t.name || key}`);
 				editBtn.className = 'edit-custom-btn shrink-0 w-8 h-8 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors';
 				editBtn.dataset.key = key;
 				editBtn.title = 'Edit';
@@ -314,7 +324,8 @@ export function setupThemePicker() {
 		const searchInput = document.createElement('input');
 		searchInput.id = 'artistic-search';
 		searchInput.type = 'search';
-		searchInput.placeholder = 'Search themes...';
+		searchInput.setAttribute('aria-label', 'Search themes');
+		searchInput.placeholder = 'Search themes…';
 		searchInput.className = 'w-full input-field';
 		searchDiv.appendChild(searchInput);
 		container.appendChild(searchDiv);
@@ -326,7 +337,9 @@ export function setupThemePicker() {
 			.filter(([k]) => !mainKeys.has(k))
 			.forEach(([key, t]) => {
 				const btn = document.createElement('button');
-				btn.className = 'artistic-modal-item group w-full flex items-center p-4 border border-slate-100 rounded-2xl hover:shadow-xl transition-all';
+				btn.type = 'button';
+				btn.setAttribute('aria-label', `Select ${t.name || key}`);
+				btn.className = 'artistic-modal-item group w-full flex items-center p-4 border border-slate-100 rounded-2xl hover:shadow-xl transition-colors';
 				btn.dataset.key = key;
 				btn.setAttribute('data-search-row', '');
 				const nameDiv = document.createElement('div');
