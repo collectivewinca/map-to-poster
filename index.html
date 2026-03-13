@@ -543,26 +543,9 @@
 								</button>
 							</div>
 
-							<div class="space-y-2">
-								<span class="label-sm">Map Or Art</span>
-								<div class="grid grid-cols-2 gap-2">
-									<button id="mode-tile" class="min-h-[84px] rounded-[1.25rem] border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4 py-3 text-left transition-[border-color,background-color,transform,box-shadow] hover:border-accent hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/60">
-										<div class="flex items-center justify-between">
-											<span class="text-[11px] font-black uppercase tracking-[0.16em] text-slate-900">Map</span>
-											<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 01.553-.894L9 2m0 18l6-3m-6 3V2m6 15l6 3m-6-3V5m6 15V8m0 12a1 1 0 00.553-.894V4.894A1 1 0 0021 4l-6 3" />
-											</svg>
-										</div>
-									</button>
-									<button id="mode-artistic" class="min-h-[84px] rounded-[1.25rem] border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-fuchsia-950 px-4 py-3 text-left transition-[border-color,background-color,transform,box-shadow] hover:border-accent hover:-translate-y-0.5 hover:shadow-lg hover:shadow-fuchsia-950/20">
-										<div class="flex items-center justify-between">
-											<span class="text-[11px] font-black uppercase tracking-[0.16em] text-white">Art</span>
-											<svg class="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-											</svg>
-										</div>
-									</button>
-								</div>
+							<div class="hidden" aria-hidden="true">
+								<button id="mode-tile" type="button">Map</button>
+								<button id="mode-artistic" type="button">Art</button>
 							</div>
 
 							<div id="standard-theme-config" class="space-y-4">
