@@ -28,8 +28,6 @@ export function setupThemePicker() {
 	const artisticMainGrid = document.getElementById('artistic-main-grid');
 	const artisticDesc = document.getElementById('artistic-desc');
 	const themeSelect = document.getElementById('theme-select');
-	const modeTile = document.getElementById('mode-tile');
-	const modeArtistic = document.getElementById('mode-artistic');
 	const standardThemeConfig = document.getElementById('standard-theme-config');
 	const artisticThemeConfig = document.getElementById('artistic-theme-config');
 	const labelsControl = document.getElementById('labels-control');
@@ -132,15 +130,6 @@ export function setupThemePicker() {
 		themeSelect.addEventListener('change', onThemeInput);
 		themeSelect.addEventListener('input', onThemeInput);
 	}
-
-	modeTile.addEventListener('click', () => {
-		updateState({ renderMode: 'tile' });
-		updateRouteStyles(state);
-	});
-	modeArtistic.addEventListener('click', () => {
-		updateState({ renderMode: 'artistic' });
-		updateRouteStyles(state);
-	});
 
 	if (labelsToggle) {
 		labelsToggle.addEventListener('change', (e) => {
@@ -429,14 +418,10 @@ export function setupThemePicker() {
 			if (labelsToggle) labelsToggle.checked = !!currentState.showLabels;
 
 			if (currentState.renderMode === 'tile') {
-				modeTile.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-accent text-white shadow-sm';
-				modeArtistic.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900';
 				if (standardThemeConfig) standardThemeConfig.classList.remove('hidden');
 				if (artisticThemeConfig) artisticThemeConfig.classList.add('hidden');
 				if (labelsControl) labelsControl.classList.remove('hidden');
 			} else {
-				modeTile.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900';
-				modeArtistic.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-accent text-white shadow-sm';
 				if (standardThemeConfig) standardThemeConfig.classList.add('hidden');
 				if (artisticThemeConfig) artisticThemeConfig.classList.remove('hidden');
 				if (labelsControl) labelsControl.classList.add('hidden');
