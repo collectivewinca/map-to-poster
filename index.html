@@ -5,7 +5,7 @@
 	<meta charset="UTF-8" />
 	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Poster Studio</title>
+	<title>y0 posters by MINY</title>
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,15 +62,15 @@
 
 		<aside id="app-sidebar" class="app-sidebar hidden md:flex md:flex-col md:relative md:w-[380px] md:h-full bg-white border-r border-slate-100 overflow-hidden">
 			<div class="p-6 pb-4 flex items-center justify-between gap-3">
-					<button id="logo-btn" aria-label="Open credits and about" class="flex items-center space-x-3 hover:opacity-80 transition-opacity text-left outline-none group">
-				<div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center shadow-lg shadow-slate-900/15 group-active:scale-95 transition-transform">
-					<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<button id="logo-btn" aria-label="Open credits and about" class="flex items-center space-x-2.5 hover:opacity-80 transition-opacity text-left outline-none group">
+				<div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center shadow-md shadow-slate-900/15 group-active:scale-95 transition-transform">
+					<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 7h18M7 3h10M6 11h12M9 15h6M10 19h4" />
 					</svg>
 				</div>
 				<div>
-					<h1 class="text-lg font-bold tracking-tight text-slate-900 leading-none">Poster Studio</h1>
-					<p class="text-[10px] font-medium text-slate-400 mt-1">Pick a place, pick a look, save it.</p>
+					<h1 class="text-sm font-bold tracking-tight text-slate-900 leading-none">y0 posters</h1>
+					<p class="text-[10px] font-semibold text-slate-400 mt-0.5">by MINY</p>
 					</div>
 				</button>
 				<button id="shell-toggle-desktop" type="button" aria-label="Hide controls" class="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors">
@@ -110,15 +110,27 @@
 				</div>
 
 				<div class="space-y-3">
-					<div class="rounded-[1.25rem] border border-slate-100 bg-slate-50/80 px-4 py-3">
-						<div class="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Fastest Way</div>
-						<p class="mt-1 text-[11px] font-medium text-slate-600">Search a city, then save. Everything else is optional.</p>
+					<div class="segment-guide">
+						<span class="segment-chip segment-chip-active">1 Search</span>
+						<span class="segment-chip">2 Keep Default Look</span>
+						<span class="segment-chip">3 Save Poster</span>
 					</div>
 
-					<div class="relative group">
-							<label for="search-input" class="label-sm">Search</label>
+					<div class="field-panel field-panel-primary relative group">
+						<div class="flex items-center justify-between gap-3">
+							<div>
+								<div class="required-badge">Start Here</div>
+								<p class="mt-2 text-[11px] font-medium text-slate-500">Search is the only thing you need to do.</p>
+							</div>
+							<span class="input-tooltip" title="Type any city name. Pick one result and the poster updates automatically.">?</span>
+						</div>
+						<div class="mt-4">
+							<div class="flex items-center justify-between mb-1.5">
+								<label for="search-input" class="label-sm mb-0">City Search</label>
+								<span class="text-[9px] font-black uppercase tracking-[0.16em] text-slate-300">Required</span>
+							</div>
 						<div class="relative">
-								<input type="text" id="search-input" name="search-city" aria-label="Search city" autocomplete="off" placeholder="Start with any city in the world…" class="input-field pl-10 pr-10" />
+								<input type="text" id="search-input" name="search-city" aria-label="Search city" autocomplete="off" placeholder="Search any city in the world…" class="input-field pl-10 pr-10 bg-white" />
 							<svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 							</svg>
@@ -130,8 +142,8 @@
 							</div>
 						</div>
 						<div id="search-results" class="absolute left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl z-[100] hidden max-h-64 overflow-y-auto p-2 backdrop-blur-xl"></div>
+						<p class="input-caption">Tip: you can also open <span class="font-semibold text-slate-500">Advanced</span> and tap a MINY Residency city.</p>
 					</div>
-					<p class="text-[10px] text-slate-400">Want a faster shortcut? Open <span class="font-semibold text-slate-500">Advanced</span> and tap a MINY Residency city.</p>
 
 					<details class="space-y-3 rounded-2xl border border-slate-100 bg-slate-50/80 p-3">
 						<summary class="flex cursor-pointer list-none items-center justify-between">
@@ -143,22 +155,30 @@
 						</summary>
 
 						<div class="space-y-3 pt-3">
-							<div class="text-left">
-									<label for="city-override-input" class="label-sm">Big Word</label>
-									<input type="text" id="city-override-input" name="city-override" aria-label="Override city name" autocomplete="off" placeholder="Optional" class="input-field mt-1" />
+							<div class="field-panel text-left">
+								<div class="flex items-center justify-between mb-1.5">
+									<label for="city-override-input" class="label-sm mb-0">Big Word</label>
+									<span class="input-tooltip" title="Change the main headline on the poster without changing the map location.">?</span>
+								</div>
+									<input type="text" id="city-override-input" name="city-override" aria-label="Override city name" autocomplete="off" placeholder="Optional" class="input-field mt-1 bg-white" />
+								<p class="input-caption">Use this if you want a custom city or headline.</p>
 							</div>
 
-							<div class="text-left">
+							<div class="field-panel text-left">
 								<div class="flex items-center justify-between mb-1">
 										<label for="country-override-input" class="label-sm mb-0">Small Word</label>
+										<div class="flex items-center gap-2">
+										<span class="input-tooltip" title="Change or hide the small line under the big word.">?</span>
 										<button id="toggle-country-btn" type="button" aria-label="Toggle country visibility on poster" title="Toggle country visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
 										<svg id="country-eye-icon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
 										</svg>
 									</button>
+									</div>
 								</div>
-									<input type="text" id="country-override-input" name="country-override" aria-label="Override country name" autocomplete="off" placeholder="Optional" class="input-field" />
+									<input type="text" id="country-override-input" name="country-override" aria-label="Override country name" autocomplete="off" placeholder="Optional" class="input-field bg-white" />
+								<p class="input-caption">Keep this empty if the default small line is already right.</p>
 							</div>
 						</div>
 					</details>
@@ -173,26 +193,30 @@
 						</summary>
 
 						<div class="space-y-3 pt-3">
-							<div>
+							<div class="field-panel">
 								<div class="flex items-center justify-between mb-1">
 										<span class="label-sm mb-0">Map Numbers</span>
+										<div class="flex items-center gap-2">
+										<span class="input-tooltip" title="Edit the exact latitude and longitude if you need precise map placement.">?</span>
 										<button id="toggle-coords-btn" type="button" aria-label="Toggle coordinates visibility on poster" title="Toggle coordinates visibility on poster" class="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 transition-colors flex-shrink-0">
 										<svg id="coords-eye-icon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
 										</svg>
 									</button>
+									</div>
 								</div>
 								<div class="grid grid-cols-2 gap-3">
 									<div>
 											<label for="lat-input" class="label-sm">Up / Down</label>
-											<input type="text" id="lat-input" name="latitude" aria-label="Latitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs" />
+											<input type="text" id="lat-input" name="latitude" aria-label="Latitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs bg-white" />
 									</div>
 									<div>
 											<label for="lon-input" class="label-sm">Left / Right</label>
-											<input type="text" id="lon-input" name="longitude" aria-label="Longitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs" />
+											<input type="text" id="lon-input" name="longitude" aria-label="Longitude" autocomplete="off" inputmode="decimal" class="input-field text-center font-mono text-xs bg-white" />
 									</div>
 								</div>
+								<p class="input-caption">Only use this when search does not land on the exact spot you want.</p>
 							</div>
 						</div>
 					</details>
@@ -376,6 +400,12 @@
 				</div>
 
 				<div class="space-y-4">
+					<div class="segment-guide">
+						<span class="segment-chip segment-chip-active">Pick Look</span>
+						<span class="segment-chip">Quick Fit</span>
+						<span class="segment-chip">More Looks Optional</span>
+					</div>
+
 					<div class="space-y-2">
 						<span class="label-sm">Best Default</span>
 						<button type="button" data-design-preset="editorial" class="w-full rounded-[1.6rem] border border-slate-200 bg-gradient-to-br from-stone-50 via-white to-slate-50 px-4 py-4 text-left transition-[border-color,background-color,transform,box-shadow] hover:border-accent hover:bg-white hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/60">
@@ -398,6 +428,7 @@
 								<div class="text-[11px] font-semibold text-slate-900">Quick fit</div>
 								<p class="mt-0.5 text-[9px] text-slate-400">Usually this is all you need before saving.</p>
 							</div>
+							<span class="input-tooltip" title="Use zoom to frame the place. Use text size if the words feel too big or too small.">?</span>
 						</div>
 
 						<div>
@@ -710,6 +741,11 @@
 				</div>
 
 				<div class="space-y-4">
+					<div class="segment-guide">
+						<span class="segment-chip segment-chip-active">Pick Size</span>
+						<span class="segment-chip">Save</span>
+					</div>
+
 					<div class="grid grid-cols-2 gap-3">
 						<button aria-label="Set output size to square 1080 by 1080 pixels" class="preset-btn min-h-[104px] px-4 py-4 text-[11px] font-semibold border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-slate-100 rounded-[1.35rem] hover:bg-white hover:border-accent hover:shadow-lg hover:shadow-slate-200/60 transition-[background-color,border-color,box-shadow,transform] duration-200 flex flex-col items-start justify-between" data-width="1080" data-height="1080">
 							<div class="w-12 h-12 rounded-xl border border-slate-200 bg-white flex items-center justify-center">
