@@ -17,6 +17,7 @@ let artisticViaMarkers = [];
 let artisticRouteStartMarker = null;
 let artisticRouteEndMarker = null;
 let isSyncing = false;
+let routeRequestVersion = 0;
 
 export async function updateRouteGeometry() {
 	const points = [
@@ -24,7 +25,9 @@ export async function updateRouteGeometry() {
 		...(state.routeViaPoints || []).map(p => [p.lat, p.lon]),
 		[state.routeEndLat, state.routeEndLon]
 	];
+	const requestVersion = ++routeRequestVersion;
 	const coords = await fetchOSRMRoute(points);
+	if (requestVersion !== routeRequestVersion) return;
 	updateState({ routeGeometry: coords });
 	syncRouteMarkers();
 }

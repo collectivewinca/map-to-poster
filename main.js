@@ -116,7 +116,7 @@ async function ensurePreviewReady() {
 }
 
 exportBtn.addEventListener('click', async () => {
-	const filename = `MINYATION-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
+	const filename = `poster-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
 	setExportButtonLoading(true, 'processing');
 	try {
 		await exportToPNG(posterContainer, filename, null);
@@ -126,7 +126,7 @@ exportBtn.addEventListener('click', async () => {
 });
 
 mobileExportBtn?.addEventListener('click', async () => {
-	const filename = `MINYATION-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
+	const filename = `poster-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
 	setExportButtonLoading(true, 'processing');
 	try {
 		await exportToPNG(posterContainer, filename, null);
@@ -136,7 +136,7 @@ mobileExportBtn?.addEventListener('click', async () => {
 });
 
 floatingExportBtn?.addEventListener('click', async () => {
-	const filename = `MINYATION-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
+	const filename = `poster-${state.city.replace(/\s+/g, '-')}-${Date.now()}.png`;
 	setExportButtonLoading(true, 'processing');
 	try {
 		await exportToPNG(posterContainer, filename, null);

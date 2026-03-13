@@ -2,10 +2,11 @@ import L from 'leaflet';
 import { state, updateState, getSelectedTheme, getSelectedArtisticTheme } from '../core/state.js';
 import { entityIcons, entityColors } from '../core/entity-icons.js';
 import { hexToRgba } from '../core/utils.js';
-import { getMap, getArtisticMap } from './map-init.js';
+import { getMap, getArtisticMap, loadMapLibreModule } from './map-init.js';
 
 let leafletMarkers = [];
 let artisticMarkers = [];
+let artisticRenderVersion = 0;
 
 const svgParser = new DOMParser();
 const CATEGORY_ORDER = ['artists', 'bands', 'venues', 'festivals', 'labels', 'producers', 'music_orgs', 'media'];
@@ -225,6 +226,7 @@ export function updateEntityMarkers(currentState) {
 	const map = getMap();
 	const artisticMap = getArtisticMap();
 	if (!map) return;
+	const renderVersion = ++artisticRenderVersion;
 
 	clearEntityMarkers();
 
@@ -256,13 +258,18 @@ export function updateEntityMarkers(currentState) {
 		leafletMarkers.push(marker);
 
 		if (artisticMap) {
-			import('maplibre-gl').then(mod => {
+			loadMapLibreModule().then(mod => {
+				if (renderVersion !== artisticRenderVersion) return;
 				const mgl = mod.default || mod;
 				const aEl = createMarkerWithLabel(em, currentState, size);
 
 				const aMarker = new mgl.Marker({ element: aEl, anchor: 'left', draggable: true, offset: [size / 2, 0] })
 					.setLngLat([em.lon, em.lat])
 					.addTo(artisticMap);
+				if (renderVersion !== artisticRenderVersion) {
+					aMarker.remove();
+					return;
+				}
 
 				aMarker.on('dragend', () => {
 					const pos = aMarker.getLngLat();

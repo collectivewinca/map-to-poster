@@ -19,6 +19,7 @@ let currentCountry = '';
 let activeFilter = 'all';
 let lastResults = [];
 let expandedEntity = null;
+let nearbyRequestVersion = 0;
 
 function el(tag, classes, attrs) {
 	const node = document.createElement(tag);
@@ -53,9 +54,11 @@ export function setupNearbyPanel() {
 
 	return {
 		async updateNearby(lat, lon, city, country) {
+			const requestVersion = ++nearbyRequestVersion;
 			currentCity = city || '';
 			currentCountry = country || '';
 			const results = await findNearby(lat, lon);
+			if (requestVersion !== nearbyRequestVersion) return;
 			lastResults = results;
 			activeFilter = 'all';
 			expandedEntity = null;

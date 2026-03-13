@@ -51,6 +51,10 @@ async function loadMapLibre() {
 	return maplibreLoadPromise;
 }
 
+export async function loadMapLibreModule() {
+	return loadMapLibre();
+}
+
 export function initMap(containerId, initialCenter, initialZoom, initialTileUrl) {
 	map = L.map(containerId, {
 		zoomControl: false,

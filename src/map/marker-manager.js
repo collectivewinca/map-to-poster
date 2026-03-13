@@ -1,12 +1,13 @@
 import L from 'leaflet';
 import { state, updateState, getSelectedTheme, getSelectedArtisticTheme } from '../core/state.js';
 import { markerIcons } from '../core/marker-icons.js';
-import { getMap, getArtisticMap } from './map-init.js';
+import { getMap, getArtisticMap, loadMapLibreModule } from './map-init.js';
 
 let markers = [];
 let artisticMarkers = [];
 let selectedMarkerIndex = 0;
 let placementMode = false;
+let artisticRenderVersion = 0;
 
 export function getMarkers() { return markers; }
 export function getArtisticMarkers() { return artisticMarkers; }
@@ -70,6 +71,7 @@ export function updateMarkerStyles(currentState) {
 	const map = getMap();
 	const artisticMap = getArtisticMap();
 	if (!map) return;
+	const renderVersion = ++artisticRenderVersion;
 
 	markers.forEach(m => m.remove());
 	artisticMarkers.forEach(m => m.remove());
@@ -129,7 +131,8 @@ export function updateMarkerStyles(currentState) {
 		markers.push(lMarker);
 
 		if (artisticMap) {
-			import('maplibre-gl').then(mod => {
+			loadMapLibreModule().then(mod => {
+				if (renderVersion !== artisticRenderVersion) return;
 				const mgl = mod.default || mod;
 				const el = document.createElement('div');
 				el.className = 'custom-marker';
@@ -160,6 +163,10 @@ export function updateMarkerStyles(currentState) {
 				})
 					.setLngLat([markerData.lon, markerData.lat])
 					.addTo(artisticMap);
+				if (renderVersion !== artisticRenderVersion) {
+					aMarker.remove();
+					return;
+				}
 
 				aMarker.on('dragend', () => {
 					const pos = aMarker.getLngLat();
